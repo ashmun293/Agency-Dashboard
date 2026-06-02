@@ -1,0 +1,32 @@
+{
+  "name": "ai-lead-response-command-center",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "dashboard": "node scripts/start-dashboard.mjs",
+    "api:dev": "npm run agents:build -- --pretty false && node .agents-dist/agents/server/apiServer.js",
+    "build": "tsc && vite build",
+    "preview": "vite preview --host 127.0.0.1",
+    "agents:build": "tsc -p tsconfig.agents.json",
+    "source:leads": "npm run agents:build -- --pretty false && node .agents-dist/agents/cli/source-leads.js",
+    "source:fixtures": "npm run agents:build -- --pretty false && node .agents-dist/agents/cli/source-leads.js --provider fixture --scoring rules --fixture-only",
+    "test:agents": "npm run agents:build -- --pretty false && node --test .agents-dist/tests/*.test.js"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.106.2",
+    "@vitejs/plugin-react": "^5.0.0",
+    "lucide-react": "^0.475.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "typescript": "^5.7.3",
+    "vite": "^6.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^25.9.1",
+    "@types/react": "^19.2.16",
+    "@types/react-dom": "^19.2.3",
+    "playwright": "^1.60.0"
+  }
+}

@@ -5872,10 +5872,44 @@ a {
   gap: 8px;
 }
 
+.mock-title-link,
+.mock-contact-link,
+.mock-evidence-link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.mock-title-link {
+  display: inline-flex;
+  margin-left: 5px;
+  vertical-align: middle;
+}
+
 .mock-contact-row span {
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.mock-contact-link {
+  display: inline-flex;
+  min-width: 0;
+  align-items: center;
+  gap: 6px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mock-contact-link svg,
+.mock-evidence-link {
+  color: #344054;
+}
+
+.mock-title-link:hover,
+.mock-contact-link:hover,
+.mock-evidence-link:hover {
+  color: #0b63f6;
 }
 
 .mock-tab-page {

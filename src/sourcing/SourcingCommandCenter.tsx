@@ -584,18 +584,24 @@ function FindingsPanel({ selectedCompany, onSelect }: { selectedCompany: string;
 
 function ProspectDrawer({ finding }: { finding: Finding }) {
   const details = getProspectDetails(finding);
+  const websiteUrl = externalUrl(details.website);
   return (
     <aside className="mock-drawer">
       <header>
         <div>
-          <h2>{finding.company} <ExternalLink size={15} /></h2>
+          <h2>
+            {finding.company}
+            <a aria-label={`Open ${finding.company} website`} className="mock-title-link" href={websiteUrl} rel="noreferrer" target="_blank">
+              <ExternalLink size={15} />
+            </a>
+          </h2>
           <p>{finding.vertical} <span>&bull;</span> Los Angeles, CA</p>
         </div>
         <button aria-label="Close" type="button"><X size={18} /></button>
       </header>
 
       <div className="mock-contact-row">
-        <span><Globe2 size={15} />{details.website}</span>
+        <a className="mock-contact-link" href={websiteUrl} rel="noreferrer" target="_blank"><Globe2 size={15} />{details.website}</a>
         <span><Phone size={15} />{details.phone}</span>
         <span><MapPin size={15} />{details.neighborhood}</span>
       </div>
@@ -621,7 +627,14 @@ function ProspectDrawer({ finding }: { finding: Finding }) {
         </div>
         {details.evidence.map((item) => (
           <div key={item.label}>
-            <span><FileText size={16} /><span dangerouslySetInnerHTML={{ __html: item.label }} /></span>
+            <span>
+              <FileText size={16} />
+              {item.label.includes("Instagram") ? (
+                <a className="mock-evidence-link" dangerouslySetInnerHTML={{ __html: item.label }} href={details.socialUrl} rel="noreferrer" target="_blank" />
+              ) : (
+                <span dangerouslySetInnerHTML={{ __html: item.label }} />
+              )}
+            </span>
             <time>{item.date}</time>
           </div>
         ))}
@@ -662,10 +675,15 @@ function ProspectDrawer({ finding }: { finding: Finding }) {
   );
 }
 
+function externalUrl(value: string) {
+  return /^https?:\/\//i.test(value) ? value : `https://${value}`;
+}
+
 function getProspectDetails(finding: Finding) {
   if (finding.company === "Sunset Pilates") {
     return {
       website: "sunsetpilates.com",
+      socialUrl: "https://www.instagram.com/sunsetpilates/",
       phone: "(323) 555-0147",
       neighborhood: "West Hollywood, CA",
       outreachCategory: "fitness studios",
@@ -686,6 +704,7 @@ function getProspectDetails(finding: Finding) {
 
   return {
     website: `${slug}.com`,
+    socialUrl: `https://www.instagram.com/${slug}/`,
     phone: `(323) 555-${String(1000 + finding.score).slice(1)}`,
     neighborhood: finding.company.includes("Venice") ? "Venice, CA" : finding.company.includes("DTLA") ? "Downtown LA, CA" : "Los Angeles, CA",
     outreachCategory: finding.vertical.toLowerCase(),
